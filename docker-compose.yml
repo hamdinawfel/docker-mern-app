@@ -9,5 +9,6 @@ services:
       - /app/node_modules
     environment:
       - PORT=8081
+    # Alternative for environment ==>
     # env_file:
     #   - ./.env
