@@ -1,4 +1,4 @@
-#docker-mern-app
+# docker-mern-app
 
 > Freestyle project using docker with mern stack application
 
@@ -20,7 +20,7 @@ See set-nodemon branch
 
 > Nodemon is a Node.js package that automatically restarts an application when it detects file changes in one or more specified directories.
 
-> Using a host volume and nodemon, you can set up the Node.js application’s container so it automatically syncs code changes between the container and the local machine.
+> By using a host volume and nodemon, the Node.js application’s container automatically syncs code changes between the container and the local folder.
 
 ```
 nodemon i --save-dev
