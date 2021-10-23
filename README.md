@@ -8,6 +8,8 @@
 
 ## 1. Host Volumes and Nodemo <a name="heading--1"/>
 
+See set-nodemon branch
+
 ### Motivation
 
 > One of the irritating things about testing during development with Docker and ExpressJS is that whenever you change your code, you have to wait for the container to rebuild
