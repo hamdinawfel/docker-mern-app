@@ -5,6 +5,7 @@
 ## Content
 
 **[1. Host Volumes and Nodemon](#heading--1)**
+
 **[2. Docker Compose](#heading--2)**
 
 ## 1. Host Volumes and Nodemo <a name="heading--1"/>
@@ -42,7 +43,7 @@ docker build -t node-app-image .
 docker run -d -p 3000:8081 -e PORT=8081 -v ${pwd}:/app:ro -v /app/node_modules --name node-app node-app-image
 ```
 
-## 2. Docker Compose <a name="heading--1"/>
+## 2. Docker Compose <a name="heading--2"/>
 
 See docker-compose branch
 
