@@ -1,6 +1,6 @@
 /node_modules
-Dockerfile
-.dockerignore
+docker-compose.backup.yml
 .gitignore
 .env
 .git
+README.md

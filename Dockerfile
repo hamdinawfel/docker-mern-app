@@ -1,11 +1,14 @@
 FROM node:15
 WORKDIR /app
 COPY package.json .
-COPY package-lock.json package-lock.json
- 
-RUN npm install
+
+ARG NODE_ENV
+RUN if [ "$NODE_ENV" = "development" ]; \
+          then npm install; \
+          else npm install --only=production; \
+          fi
  
 COPY . .
 ENV PORT 8081
 EXPOSE $PORT
-CMD [ "npm", "run","dev" ]
+CMD [ "node", "app.js" ]
