@@ -8,7 +8,10 @@
 
 **[2. Docker Compose](#heading--2)**
 
-## 1. Host Volumes and Nodemo <a name="heading--1"/>
+**[3. Docker Compose with development / production environment ](#heading--3)**
+
+
+## 1. Host Volumes and Nodemon <a name="heading--1"/>
 
 See set-nodemon branch
 
@@ -67,33 +70,123 @@ services:
     ports:
       - "3000:8081"
     volumes:
-      - ./:/app:ro
-      - /app/node_modules
+      - ./:/app:ro  # automatically syncs the changes between the container and the local folder (like ${pwd}:/app:ro).
+      - /app/node_modules # (prevent the node_modules to be syncs)
     environment:
       - PORT=8081
-    # Alternative for environment ==>
-    # env_file:
-    #   - ./.env
+   
 ```
 
 ```
 docker-compose up -d
 ```
 
-Or use `--build` flag to forcing docker compose to rebuild the image when there is a change in Dockerfile.
+Basic docker-compose commands 
 
-```
-docker-compose up -d --build
-```
-
-Stop and remove the running containers.
-
-```
+````
+// create and start containers
+docker-compose up
+// start services with detached mode
+docker-compose -d up
+// start specific service
+docker-compose up <service-name>
+// list images
+docker-compose images
+// list containers
+docker-compose ps
+// start service
+docker-compose start
+// stop services
+docker-compose stop
+// display running containers
+docker-compose top
+// kill services
+docker-compose kill
+// remove stopped containers
+docker-compose rm
+// stop all contaners and remove images, volumes
 docker-compose down
+````
+
+
+
+
+## 3. Docker Compose with development / production environment <a name="heading--3"/>
+
+See dev-prod-setup branch
+
+### Motivation
+
+>In a software development lifecycle, there may be as little deployment environments as just development and production. However, there may also be as many as development, integration, testing, staging and production. every environment require special configurations.
+
+### Remediation
+
+>Docker Compose can use environment variables from shell or .env file and it can merge multiple Compose file into one. so by defining the base config in one file `docker-compose.yml` and the specific config in other files(`docker-compose.dev.yml` or `docker-compose.prod.yml`) can deal with a problem without repeating the whole thing (DRY).
+
+`Dockerfile`
+```
+FROM node:15
+WORKDIR /app
+COPY package.json .
+
+ARG NODE_ENV
+RUN if [ "$NODE_ENV" = "development" ]; \
+          then npm install; \
+          else npm install --only=production; \
+          fi
+ 
+COPY . .
+ENV PORT 8081
+EXPOSE $PORT
+CMD [ "node", "app.js" ]
+```
+`docker-compose.yml`
+```
+version: "3"
+services:
+  node-app:
+    build: .
+    ports:
+      - "3000:8081"
+    environment:
+      - PORT=8081
+
+```
+`docker-compose.dev.yml`
+```
+version: "3"
+services:
+  node-app:
+    build:
+      context: .
+      args:
+        NODE_ENV: development
+    volumes:
+        - ./:/app:ro
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+
+```
+```
+ docker-compose  -f docker-compose.yml -f docker-compose.dev.yml up -d  --build
 ```
 
-Romove the volumes created for this containers by using `-v` flag.
+`docker-compose.prod.yml`
+```
+version: "3"
+services:
+  node-app:
+    build:
+      context: .
+      args:
+        NODE_ENV: production
+    environment:
+      - NODE_ENV=production
+    command: node app.js
+```
 
 ```
-docker-compose down -v
+ docker-compose  -f docker-compose.yml -f docker-compose.prod.yml up -d  --build
 ```
