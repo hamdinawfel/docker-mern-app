@@ -163,7 +163,7 @@ services:
         NODE_ENV: development
     volumes:
         - ./:/app:ro
-      - /app/node_modules
+        - /app/node_modules
     environment:
       - NODE_ENV=development
     command: npm run dev
