@@ -86,7 +86,7 @@ Or use `--build` flag to forcing docker compose to rebuild the image when there 
 docker-compose up -d --build
 ```
 
-Stop and remove the running containers and remove image.
+Stop and remove the running containers.
 
 ```
 docker-compose down
