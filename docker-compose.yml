@@ -6,3 +6,16 @@ services:
       - "3000:8081"
     environment:
       - PORT=8081
+    # depends_on:
+    #   - mongo
+
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    volumes:
+      - mongo-db:/data/db
+
+volumes:
+  mongo-db:
