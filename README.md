@@ -199,8 +199,10 @@ See connect-mongo-node branch
 ### Motivation
 
 > Since there is a MongoDB Connection Option `connectTimeoutMS`and it sets the number of milliseconds a socket stays inactive before closing during the connection phase of the driver. That is to say, when the application initiates a connection, when a replica set connects to new members, or when a replica set reconnects to members. the default value is 30000 milliseconds would mean the driver would wait up to 3 seconds for a response from a MongoDB server. [link][1]
+
 > Compose does not wait until your `mongo_test` container is “ready”.
 The problem of waiting for a database to be ready is really just a subset of a much larger problem of distributed systems. In production, your database could become unavailable or move hosts at any time. Your application needs to be resilient to these types of failures. [link][2]
+
 > Using `depends_on` in your `app_test` service is still no guarantee to establish the connection between your services.
 
 ### Solution:
