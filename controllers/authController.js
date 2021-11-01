@@ -16,6 +16,7 @@ exports.signup = (req, res, next) => {
     user
       .save()
       .then((user) => {
+        req.session.user = user;
         res.status(201).json({
           status: "succes",
           data: {
@@ -48,6 +49,7 @@ exports.login = (req, res, next) => {
               .status(401)
               .json({ error: "Username or password is incorrect" });
           }
+          req.session.user = user;
           res.status(200).json({
             status: "succes",
             data: {
